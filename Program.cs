@@ -1,7 +1,8 @@
-﻿using CampusLove_BraydenYJuan.src.Shared.Helpers;
+﻿using CampusLove.src.ui;
+using CampusLove_BraydenYJuan.src.Shared.Helpers;
 using Microsoft.EntityFrameworkCore;
 
-class Program
+internal partial class Program
 {
     public static void Main(String[] args)
     {
@@ -21,5 +22,7 @@ class Program
             Console.WriteLine("❌ Error al conectar con la base de datos:");
             Console.WriteLine(ex.Message);
         }
+
+        MenuPrincipal.MenuMain();
     }
 }
