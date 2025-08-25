@@ -15,13 +15,23 @@ public class MenuUsuario
         while (!salir)
         {
             Console.Clear();
-            Console.WriteLine("\n --- Menu Usuario ---");
-            Console.WriteLine("1. Ver perfil");
-            Console.WriteLine("2. Editar perfil");
-            Console.WriteLine("3. Ver mis coincidencias (Matches)");
-            Console.WriteLine("4. Ver estadisticas del sistema (usuarios con más likes, más matches, etc.)");
-            Console.WriteLine("5. Salir");
-            Console.Write("Opcion: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("=======================================");
+            Console.WriteLine("           🌟 MENÚ USUARIO 🌟           ");
+            Console.WriteLine("=======================================\n");
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("  [1]  👤 Ver perfil");
+            Console.WriteLine("  [2]  ✏️  Editar perfil");
+            Console.WriteLine("  [3]  💖 Ver mis coincidencias (Matches)");
+            Console.WriteLine("  [4]  📊 Ver estadísticas del sistema");
+            Console.WriteLine("  [5]  🚪 Salir\n");
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("=======================================");
+            Console.ResetColor();
+            Console.Write("👉 Elige una opción: ");
+
             int opm = int.Parse(Console.ReadLine()!);
             switch (opm)
             {

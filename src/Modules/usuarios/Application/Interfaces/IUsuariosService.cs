@@ -2,11 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CampusLove.src.Modules.Usuario.Domain.Entities;
 
-namespace CampusLove.src.Modules.Usuario.Application.Interfaces
+namespace CampusLove_BraydenYJuan.src.Modules.usuarios.Application.Interfaces;
+
+    public interface IUsuarioService
 {
-    public interface IUsuariosService
-    {
-        
+    Task RegistrarUsuarioAsync(Usuario usuario);
+    Task ActualizarUsuarioAsync(Usuario usuario);
+    Task EliminarUsuarioAsync(int id);
+    Task<Usuario?> ObtenerUsuarioPorIdAsync(int id);
+    Task<IEnumerable<Usuario>> ObtenerTodosLosUsuariosAsync();
     }
-}

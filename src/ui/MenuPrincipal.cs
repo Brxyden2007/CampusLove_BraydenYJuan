@@ -18,12 +18,21 @@ namespace CampusLove.src.ui
             bool salir = false;
             while (!salir)
             {
-                Console.Clear();
-                Console.WriteLine("\n --- Menu Principal ---");
-                Console.WriteLine("1. Registrarse como nuevo usuario");
-                Console.WriteLine("2. Login Usuario");
-                Console.WriteLine("3. Salir");
-                Console.Write("Opcion: ");
+
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("=======================================");
+            Console.WriteLine("          🌐 MENÚ PRINCIPAL 🌐          ");
+            Console.WriteLine("=======================================\n");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("  [1] 📝 Registrarse como nuevo usuario");
+            Console.WriteLine("  [2] 🔑 Login Usuario");
+            Console.WriteLine("  [3] 🚪 Salir\n");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("=======================================");
+            Console.ResetColor();
+            Console.Write("👉 Elige una opción: ");
+
                 int opm = int.Parse(Console.ReadLine()!);
                 switch (opm)
                 {
