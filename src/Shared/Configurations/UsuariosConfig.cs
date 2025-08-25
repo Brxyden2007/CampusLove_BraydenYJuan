@@ -31,8 +31,8 @@ namespace CampusLove.src.Shared.Configurations
             .HasMaxLength(100)
             .IsRequired();
 
-            builder.Property(u => u.Password)
-            .HasColumnName("password")
+            builder.Property(u => u.PasswordUser)
+            .HasColumnName("passworduser")
             .HasMaxLength(255)
             .IsRequired();
 

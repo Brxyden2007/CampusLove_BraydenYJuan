@@ -2,7 +2,7 @@
 using CampusLove_BraydenYJuan.src.Shared.Helpers;
 using Microsoft.EntityFrameworkCore;
 
-internal partial class Program
+internal class Program
 {
     public static void Main(String[] args)
     {
@@ -23,6 +23,6 @@ internal partial class Program
             Console.WriteLine(ex.Message);
         }
 
-        MenuPrincipal.MenuMain();
+        _ = MenuPrincipal.MenuMain();
     }
 }

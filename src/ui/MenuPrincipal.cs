@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using CampusLove.src.Modules.Usuario.Domain.Entities;
 using CampusLove.src.Modules.Usuario.UI;
+using CampusLove.src.Shared.Utils;
 using CampusLove_BraydenYJuan.src.Shared.Helpers;
 
 namespace CampusLove.src.ui
@@ -30,6 +32,13 @@ namespace CampusLove.src.ui
                         int edad;
                         Console.Write("Nombre: ");
                         nombre = Console.ReadLine()!;
+                        Validaciones.EsNombreValido(nombre);
+                        if (!Validaciones.EsNombreValido(nombre))
+                        {
+                            Console.WriteLine("Nombre invalido. Presiona Enter para continuar.");
+                            Console.ReadLine();
+                            break;
+                        }
                         Console.Write("Apellido: ");
                         apellido = Console.ReadLine()!;
                         Console.Write("Email: ");
@@ -57,7 +66,7 @@ namespace CampusLove.src.ui
                             Nombre = nombre,
                             Apellido = apellido,
                             Email = email,
-                            Password = password,
+                            PasswordUser = password,
                             Edad = edad,
                             Genero = genero,
                             Carrera = carrera,
@@ -76,13 +85,12 @@ namespace CampusLove.src.ui
                         string emailLogin = Console.ReadLine()!;
                         Console.Write("Password: ");
                         string passwordLogin = Console.ReadLine()!;
-                        var usuario = context.Usuarios.FirstOrDefault(u => u.Email == emailLogin && u.Password == passwordLogin);
+                        var usuario = context.Usuarios.FirstOrDefault(u => u.Email == emailLogin && u.PasswordUser == passwordLogin);
                         if (usuario != null)
                         {
                             Console.WriteLine($"Bienvenido, {usuario.Nombre} {usuario.Apellido}! Presiona Enter para continuar.");
                             Console.ReadLine();
-                            await MenuUsuario.MostrarMenu();
-                            // await new MenuUsuario(context, usuario).RenderMenu();
+                            _ = MenuUsuario.MostrarMenu();
                         }
                         else
                         {
@@ -96,8 +104,15 @@ namespace CampusLove.src.ui
                         break;
                     default:
                         Console.WriteLine("Opcion Invalida, vuelva a introducir una opcion correcta.");
+                        Console.ReadLine();
                         break;
-                }
+                        // Falta implementar que se pueda establecer bien ya que al insertar una letra se quita automaticamente el sistema
+                        // Falta implementar el hash de la password
+                        // Falta implementar el menu de usuario
+                        // Falta implementar las validaciones de los datos al registrarse
+                        // Falta implementar que no se pueda registrar dos usuarios con el mismo email
+                        // Falta implementar el logout
+                }   
             }
         }
     }
