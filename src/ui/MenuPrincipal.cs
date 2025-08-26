@@ -1,28 +1,28 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
-using CampusLove.src.Modules.Usuario.Domain.Entities;
-using CampusLove.src.Modules.Usuario.UI;
+using System.Collections.Generic;
 using CampusLove.src.Shared.Utils;
+using CampusLove.src.Modules.Usuario.Domain.Entities;
 using CampusLove_BraydenYJuan.src.Shared.Helpers;
+using CampusLove_BraydenYJuan.src.Modules.intereses.Domain.Entities;
+using CampusLove_BraydenYJuan.src.Modules.usuarios_intereses.Domain.Entities; // <-- ¡Asegúrate de incluir este using!
+using CampusLove.src.Modules.Usuario.UI;
+using CampusLove_BraydenYJuan.src.Shared.Context; // Asegúrate de tener el using para tu DbContextFactory
 
-namespace CampusLove.src.ui
+namespace CampusLove.src.UI
 {
     public class MenuPrincipal
     {
         public static void MenuMain()
         {
-            var context = DbContextFactory.Create();
             bool salir = false;
+
             while (!salir)
             {
-
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("=======================================");
-                Console.WriteLine("          🌐 MENÚ PRINCIPAL 🌐          ");
+                Console.WriteLine("          🌐 MENÚ PRINCIPAL 🌐         ");
                 Console.WriteLine("=======================================\n");
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("  [1] 📝 Registrarse como nuevo usuario");
@@ -35,99 +35,106 @@ namespace CampusLove.src.ui
 
                 if (!int.TryParse(Console.ReadLine(), out int opm))
                 {
-                    Console.WriteLine("Opción inválida. Presiona Enter para continuar.");
+                    Console.WriteLine("❌ Opción inválida. Presiona Enter para continuar.");
                     Console.ReadLine();
                     continue;
                 }
+
                 switch (opm)
                 {
-                    
-                case 1:
-                Console.Clear();
-                string nombre, apellido, email, password, genero, carrera, intereses, frase;
-                int edad;
+                    case 1:
+                        RegistrarUsuario();
+                        break;
 
-                Console.Write("Nombre: ");
-                nombre = Console.ReadLine()!;
-                if (!Validaciones.EsSoloLetras(nombre))
-                {
-                Console.WriteLine("❌ Nombre inválido. Solo letras sin espacios ni caracteres especiales.");
+                    case 2:
+                        LoginUsuario();
+                        break;
+
+                    case 3:
+                        salir = true;
+                        break;
+
+                    default:
+                        Console.WriteLine("❌ Opción inválida.");
+                        Console.WriteLine("Presiona Enter para continuar.");
+                        Console.ReadLine();
+                        break;
+                }
+            }
+        }
+
+        // 🔹 Método de Registro
+        private static void RegistrarUsuario()
+        {
+            var context = DbContextFactory.Create();
+
+            Console.Clear();
+            Console.WriteLine("=== Registro de Usuario ===");
+
+            string nombre, apellido, email, password, genero, carrera, frase;
+            int edad;
+
+            Console.Write("Nombre: ");
+            nombre = Console.ReadLine()!;
+            if (!Validaciones.EsSoloLetras(nombre)) { Console.WriteLine("❌ Nombre inválido."); Console.ReadLine(); return; }
+
+            Console.Write("Apellido: ");
+            apellido = Console.ReadLine()!;
+            if (!Validaciones.EsSoloLetras(apellido)) { Console.WriteLine("❌ Apellido inválido."); Console.ReadLine(); return; }
+
+            Console.Write("Email: ");
+            email = Console.ReadLine()!;
+            if (!Validaciones.EsEmailValido(email)) { Console.WriteLine("❌ Email inválido."); Console.ReadLine(); return; }
+
+            if (context.Usuarios.Any(u => u.Email == email))
+            {
+                Console.WriteLine("❌ Ya existe un usuario con ese correo.");
                 Console.ReadLine();
-                break;
-                }
+                return;
+            }
 
-                Console.Write("Apellido: ");
-                apellido = Console.ReadLine()!;
-                if (!Validaciones.EsSoloLetras(apellido))
-                {
-                Console.WriteLine("❌ Apellido inválido. Solo letras sin espacios ni caracteres especiales.");
-                Console.ReadLine();
-                break;
-                }
+            Console.Write("Password: ");
+            password = Console.ReadLine()!;
+            if (!Validaciones.EsPasswordValido(password)) { Console.WriteLine("❌ Contraseña inválida."); Console.ReadLine(); return; }
 
-                Console.Write("Email: ");
-                email = Console.ReadLine()!;
-                if (!Validaciones.EsEmailValido(email))
-                {
-                Console.WriteLine("❌ Email inválido.");
-                Console.ReadLine();
-                break;
-                }
+            Console.Write("Edad: ");
+            if (!Validaciones.EsEdadValida(Console.ReadLine()!, out edad)) { Console.WriteLine("❌ Edad inválida."); Console.ReadLine(); return; }
 
-                Console.Write("Password: ");
-                password = Console.ReadLine()!;
-                if (!Validaciones.EsPasswordValido(password))
-                {
-                Console.WriteLine("❌ La contraseña debe tener al menos 4 caracteres.");
-                Console.ReadLine();
-                break;
-                }
+            Console.Write("Genero (M/F): ");
+            genero = Console.ReadLine()!;
+            if (!Validaciones.EsGeneroValido(genero)) { Console.WriteLine("❌ Género inválido."); Console.ReadLine(); return; }
 
-                Console.Write("Edad: ");
-                if (!Validaciones.EsEdadValida(Console.ReadLine()!, out edad))
-                {
-                Console.WriteLine("❌ Edad inválida. Debe ser un número entre 1 y 120.");
-                Console.ReadLine();
-                break;
-                }
+            Console.Write("Carrera: ");
+            carrera = Console.ReadLine()!;
+            if (!Validaciones.EsSoloLetrasConEspacios(carrera)) { Console.WriteLine("❌ Carrera inválida."); Console.ReadLine(); return; }
 
-                Console.Write("Genero (M/F): ");
-                genero = Console.ReadLine()!;
-                if (!Validaciones.EsGeneroValido(genero))
-                {
-                Console.WriteLine("❌ Género inválido. Solo 'M' o 'F'.");
-                Console.ReadLine();
-                break;
-                }
+            // Intereses
+            var intereses = context.Intereses.ToList();
+            Console.WriteLine("\n=== Selecciona tus intereses ===");
 
-                Console.Write("Carrera: ");
-                carrera = Console.ReadLine()!;
-                if (!Validaciones.EsSoloLetrasConEspacios(carrera))
-                {
-                    Console.WriteLine("❌ Carrera inválida. Solo letras y espacios.");
-                    Console.ReadLine();
-                    break;
-                }
+            for (int i = 0; i < intereses.Count; i++)
+                Console.WriteLine($"[{i + 1}] {intereses[i].Nombre}");
 
-                Console.Write("Intereses (separados por comas): ");
-                intereses = Console.ReadLine()!;
-                if (!Validaciones.EsInteresesValido(intereses))
-                {
-                Console.WriteLine("❌ Intereses inválidos.");
-                Console.ReadLine();
-                break;
-                }
+            Console.Write("\n👉 Ingresa los números separados por coma: ");
+            var entrada = Console.ReadLine();
 
-                Console.Write("Frase: ");
-                frase = Console.ReadLine()!;
-                if (!Validaciones.EsFraseValida(frase))
-                {
-                Console.WriteLine("❌ La frase no puede estar vacía.");
-                Console.ReadLine();
-                break;
-                }
+            var seleccionados = new List<Interes>();
+            if (!string.IsNullOrWhiteSpace(entrada))
+            {
+                var seleccion = entrada.Split(',')
+                    .Select(x => int.TryParse(x.Trim(), out var num) ? num : -1)
+                    .Where(x => x > 0 && x <= intereses.Count)
+                    .ToList();
 
-    // ✅ Guardar en DB
+                seleccionados = intereses
+                    .Where((i, index) => seleccion.Contains(index + 1))
+                    .ToList();
+            }
+
+            Console.Write("Frase: ");
+            frase = Console.ReadLine()!;
+            if (!Validaciones.EsFraseValida(frase)) { Console.WriteLine("❌ Frase inválida."); Console.ReadLine(); return; }
+
             var nuevoUsuario = new Usuario
             {
                 Nombre = nombre,
@@ -137,51 +144,53 @@ namespace CampusLove.src.ui
                 Edad = edad,
                 Genero = genero,
                 Carrera = carrera,
-                Intereses = intereses,
                 Frase = frase
             };
 
+            // Creamos las relaciones explícitas con UsuarioInteres
+            foreach (var interes in seleccionados)
+            {
+                nuevoUsuario.UsuarioIntereses.Add(new UsuarioInteres
+                {
+                    // ¡ACTUALIZADO! Usamos 'interes_id' (snake_case)
+                    interes_id = interes.Id
+                });
+            }
+
             context.Usuarios.Add(nuevoUsuario);
-            context.SaveChanges();
-            Console.WriteLine("✅ Usuario registrado exitosamente. Presiona Enter para continuar.");
+            context.SaveChanges(); // <-- Línea 161 que da el error
+
+            Console.WriteLine("✅ Usuario registrado exitosamente. Presiona Enter.");
             Console.ReadLine();
+        }
+
+        // 🔹 Método de Login
+        private static void LoginUsuario()
+        {
+            var context = DbContextFactory.Create();
+
             Console.Clear();
-            break;
-                        
-                case 2:
-                        Console.Clear();
-                        Console.Write("Email: ");
-                        string emailLogin = Console.ReadLine()!;
-                        Console.Write("Password: ");
-                        string passwordLogin = Console.ReadLine()!;
-                        var usuario = context.Usuarios.FirstOrDefault(u => u.Email == emailLogin && u.PasswordUser == passwordLogin);
-                        if (usuario != null)
-                        {
-                            Console.WriteLine($"Bienvenido, {usuario.Nombre} {usuario.Apellido}! Presiona Enter para continuar.");
-                            Console.ReadLine();
-                            MenuUsuario.MostrarMenu();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Credenciales invalidas. Presiona Enter para continuar.");
-                            Console.ReadLine();
-                        }
-                        Console.Clear();
-                        break;
-                    case 3:
-                        salir = true;
-                        break;
-                    default:
-                        Console.WriteLine("Opcion Invalida, vuelva a introducir una opcion correcta.");
-                        Console.ReadLine();
-                        break;
-                        // Falta implementar que se pueda establecer bien ya que al insertar una letra se quita automaticamente el sistema
-                        // Falta implementar el hash de la password
-                        // Falta implementar el menu de usuario
-                        // Falta implementar las validaciones de los datos al registrarse
-                        // Falta implementar que no se pueda registrar dos usuarios con el mismo email
-                        // Falta implementar el logout
-                }
+            Console.WriteLine("=== Login Usuario ===");
+
+            Console.Write("Email: ");
+            string email = Console.ReadLine()!;
+
+            Console.Write("Password: ");
+            string password = Console.ReadLine()!;
+
+            var usuario = context.Usuarios
+                .FirstOrDefault(u => u.Email == email && u.PasswordUser == password);
+
+            if (usuario != null)
+            {
+                Console.WriteLine($"✅ Bienvenido, {usuario.Nombre} {usuario.Apellido}!");
+                Console.ReadLine();
+                MenuUsuario.MostrarMenu();
+            }
+            else
+            {
+                Console.WriteLine("❌ Credenciales inválidas.");
+                Console.ReadLine();
             }
         }
     }

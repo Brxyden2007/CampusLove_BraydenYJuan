@@ -37,6 +37,8 @@ namespace CampusLove_BraydenYJuan.src.Shared.Configurations
                 .WithMany()
                 .HasForeignKey(l => l.UsuarioQueRecibeLikeId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+                
         }
     }
 }

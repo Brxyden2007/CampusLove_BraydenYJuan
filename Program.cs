@@ -1,4 +1,4 @@
-﻿using CampusLove.src.ui;
+﻿using CampusLove.src.UI;
 using CampusLove_BraydenYJuan.src.Shared.Helpers;
 using Microsoft.EntityFrameworkCore;
 
