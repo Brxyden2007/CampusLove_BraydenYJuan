@@ -3137,24 +3137,25 @@
     ]
   },
   "packageFolders": {
-    "/home/camper/.nuget/packages/": {}
+    "C:\\Users\\whato\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/camper/CampusLove_BraydenYJuan/CampusLove.csproj",
+      "projectUniqueName": "C:\\Users\\whato\\CampusLove_BraydenYJuan\\CampusLove.csproj",
       "projectName": "CampusLove",
-      "projectPath": "/home/camper/CampusLove_BraydenYJuan/CampusLove.csproj",
-      "packagesPath": "/home/camper/.nuget/packages/",
-      "outputPath": "/home/camper/CampusLove_BraydenYJuan/obj/",
+      "projectPath": "C:\\Users\\whato\\CampusLove_BraydenYJuan\\CampusLove.csproj",
+      "packagesPath": "C:\\Users\\whato\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\whato\\CampusLove_BraydenYJuan\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/camper/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\whato\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -3173,7 +3174,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.200"
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net9.0": {
@@ -3222,7 +3223,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.203/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.303/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

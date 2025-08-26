@@ -23,6 +23,6 @@ internal class Program
             Console.WriteLine(ex.Message);
         }
 
-        _ = MenuPrincipal.MenuMain();
+        MenuPrincipal.MenuMain();
     }
 }

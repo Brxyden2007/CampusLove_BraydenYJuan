@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CampusLove_BraydenYJuan.src.Modules.intereses.Domain.Entities;
+using CampusLove_BraydenYJuan.src.Modules.likes.Domain.Entities;
+using CampusLove_BraydenYJuan.src.Modules.matches.Domain.Entities;
 
 namespace CampusLove.src.Modules.Usuario.Domain.Entities;
 
@@ -35,4 +38,9 @@ namespace CampusLove.src.Modules.Usuario.Domain.Entities;
             Intereses = intereses;
             Frase = frase;
         }
+        
+        // Relaciones
+        public ICollection<Interes>? InteresesRelacionados { get; set; }
+        public ICollection<Match>? Matches { get; set; }
+        public ICollection<Like>? Likes { get; set; }
     }

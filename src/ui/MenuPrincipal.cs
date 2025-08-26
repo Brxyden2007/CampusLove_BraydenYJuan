@@ -12,83 +12,143 @@ namespace CampusLove.src.ui
 {
     public class MenuPrincipal
     {
-        public static async Task MenuMain()
+        public static void MenuMain()
         {
             var context = DbContextFactory.Create();
             bool salir = false;
             while (!salir)
             {
 
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("=======================================");
-            Console.WriteLine("          🌐 MENÚ PRINCIPAL 🌐          ");
-            Console.WriteLine("=======================================\n");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("  [1] 📝 Registrarse como nuevo usuario");
-            Console.WriteLine("  [2] 🔑 Login Usuario");
-            Console.WriteLine("  [3] 🚪 Salir\n");
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("=======================================");
-            Console.ResetColor();
-            Console.Write("👉 Elige una opción: ");
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("=======================================");
+                Console.WriteLine("          🌐 MENÚ PRINCIPAL 🌐          ");
+                Console.WriteLine("=======================================\n");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("  [1] 📝 Registrarse como nuevo usuario");
+                Console.WriteLine("  [2] 🔑 Login Usuario");
+                Console.WriteLine("  [3] 🚪 Salir\n");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("=======================================");
+                Console.ResetColor();
+                Console.Write("👉 Elige una opción: ");
 
-                int opm = int.Parse(Console.ReadLine()!);
+                if (!int.TryParse(Console.ReadLine(), out int opm))
+                {
+                    Console.WriteLine("Opción inválida. Presiona Enter para continuar.");
+                    Console.ReadLine();
+                    continue;
+                }
                 switch (opm)
                 {
-                    case 1:
-                        string nombre, apellido, email, password, genero, carrera, intereses, frase;
-                        int edad;
-                        Console.Write("Nombre: ");
-                        nombre = Console.ReadLine()!;
-                        Validaciones.EsNombreValido(nombre);
-                        if (!Validaciones.EsNombreValido(nombre))
-                        {
-                            Console.WriteLine("Nombre invalido. Presiona Enter para continuar.");
-                            Console.ReadLine();
-                            break;
-                        }
-                        Console.Write("Apellido: ");
-                        apellido = Console.ReadLine()!;
-                        Console.Write("Email: ");
-                        email = Console.ReadLine()!;
-                        Console.Write("Password: ");
-                        password = Console.ReadLine()!;
-                        Console.Write("Edad: ");
-                        edad = int.Parse(Console.ReadLine()!);
-                        Console.Write("Genero (M/F): ");
-                        genero = Console.ReadLine()!.ToUpper();
-                        if (genero != "M" && genero != "F")
-                        {
-                            Console.WriteLine("Genero invalido. Presiona Enter para continuar.");
-                            Console.ReadLine();
-                            break;
-                        }
-                        Console.Write("Carrera: ");
-                        carrera = Console.ReadLine()!;
-                        Console.Write("Intereses (separados por comas): ");
-                        intereses = Console.ReadLine()!;
-                        Console.Write("Frase: ");
-                        frase = Console.ReadLine()!;
-                        var nuevoUsuario = new Usuario
-                        {
-                            Nombre = nombre,
-                            Apellido = apellido,
-                            Email = email,
-                            PasswordUser = password,
-                            Edad = edad,
-                            Genero = genero,
-                            Carrera = carrera,
-                            Intereses = intereses,
-                            Frase = frase
-                        };
-                        context.Usuarios.Add(nuevoUsuario);
-                        context.SaveChanges();
-                        Console.WriteLine("Usuario registrado exitosamente. Presiona Enter para continuar.");
-                        Console.ReadLine();
-                        Console.Clear();
-                        break;
-                    case 2:
+                    
+                case 1:
+                Console.Clear();
+                string nombre, apellido, email, password, genero, carrera, intereses, frase;
+                int edad;
+
+                Console.Write("Nombre: ");
+                nombre = Console.ReadLine()!;
+                if (!Validaciones.EsSoloLetras(nombre))
+                {
+                Console.WriteLine("❌ Nombre inválido. Solo letras sin espacios ni caracteres especiales.");
+                Console.ReadLine();
+                break;
+                }
+
+                Console.Write("Apellido: ");
+                apellido = Console.ReadLine()!;
+                if (!Validaciones.EsSoloLetras(apellido))
+                {
+                Console.WriteLine("❌ Apellido inválido. Solo letras sin espacios ni caracteres especiales.");
+                Console.ReadLine();
+                break;
+                }
+
+                Console.Write("Email: ");
+                email = Console.ReadLine()!;
+                if (!Validaciones.EsEmailValido(email))
+                {
+                Console.WriteLine("❌ Email inválido.");
+                Console.ReadLine();
+                break;
+                }
+
+                Console.Write("Password: ");
+                password = Console.ReadLine()!;
+                if (!Validaciones.EsPasswordValido(password))
+                {
+                Console.WriteLine("❌ La contraseña debe tener al menos 4 caracteres.");
+                Console.ReadLine();
+                break;
+                }
+
+                Console.Write("Edad: ");
+                if (!Validaciones.EsEdadValida(Console.ReadLine()!, out edad))
+                {
+                Console.WriteLine("❌ Edad inválida. Debe ser un número entre 1 y 120.");
+                Console.ReadLine();
+                break;
+                }
+
+                Console.Write("Genero (M/F): ");
+                genero = Console.ReadLine()!;
+                if (!Validaciones.EsGeneroValido(genero))
+                {
+                Console.WriteLine("❌ Género inválido. Solo 'M' o 'F'.");
+                Console.ReadLine();
+                break;
+                }
+
+                Console.Write("Carrera: ");
+                carrera = Console.ReadLine()!;
+                if (!Validaciones.EsSoloLetrasConEspacios(carrera))
+                {
+                    Console.WriteLine("❌ Carrera inválida. Solo letras y espacios.");
+                    Console.ReadLine();
+                    break;
+                }
+
+                Console.Write("Intereses (separados por comas): ");
+                intereses = Console.ReadLine()!;
+                if (!Validaciones.EsInteresesValido(intereses))
+                {
+                Console.WriteLine("❌ Intereses inválidos.");
+                Console.ReadLine();
+                break;
+                }
+
+                Console.Write("Frase: ");
+                frase = Console.ReadLine()!;
+                if (!Validaciones.EsFraseValida(frase))
+                {
+                Console.WriteLine("❌ La frase no puede estar vacía.");
+                Console.ReadLine();
+                break;
+                }
+
+    // ✅ Guardar en DB
+            var nuevoUsuario = new Usuario
+            {
+                Nombre = nombre,
+                Apellido = apellido,
+                Email = email,
+                PasswordUser = password,
+                Edad = edad,
+                Genero = genero,
+                Carrera = carrera,
+                Intereses = intereses,
+                Frase = frase
+            };
+
+            context.Usuarios.Add(nuevoUsuario);
+            context.SaveChanges();
+            Console.WriteLine("✅ Usuario registrado exitosamente. Presiona Enter para continuar.");
+            Console.ReadLine();
+            Console.Clear();
+            break;
+                        
+                case 2:
                         Console.Clear();
                         Console.Write("Email: ");
                         string emailLogin = Console.ReadLine()!;
@@ -99,7 +159,7 @@ namespace CampusLove.src.ui
                         {
                             Console.WriteLine($"Bienvenido, {usuario.Nombre} {usuario.Apellido}! Presiona Enter para continuar.");
                             Console.ReadLine();
-                            _ = MenuUsuario.MostrarMenu();
+                            MenuUsuario.MostrarMenu();
                         }
                         else
                         {
@@ -121,7 +181,7 @@ namespace CampusLove.src.ui
                         // Falta implementar las validaciones de los datos al registrarse
                         // Falta implementar que no se pueda registrar dos usuarios con el mismo email
                         // Falta implementar el logout
-                }   
+                }
             }
         }
     }
