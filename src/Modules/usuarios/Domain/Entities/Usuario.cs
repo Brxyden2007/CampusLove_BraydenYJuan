@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using CampusLove_BraydenYJuan.src.Modules.intereses.Domain.Entities;
 using CampusLove_BraydenYJuan.src.Modules.likes.Domain.Entities;
 using CampusLove_BraydenYJuan.src.Modules.matches.Domain.Entities;
-using CampusLove_BraydenYJuan.src.Modules.usuarios_intereses.Domain.Entities;
 
 namespace CampusLove.src.Modules.Usuario.Domain.Entities;
 
@@ -21,10 +20,19 @@ public class Usuario
     public string? Carrera { get; set; }
     public string? Frase { get; set; }
 
-    // Relaciones
+    // Relaciones existentes
     public ICollection<Match>? Matches { get; set; }
     public ICollection<Like>? Likes { get; set; } 
     public ICollection<UsuarioInteres> UsuarioIntereses { get; set; } = new List<UsuarioInteres>();
+
+    // Añade estas nuevas colecciones para las relaciones de Match y Like
+     // Relación con Likes
+    public ICollection<Like> LikesDados { get; set; } = new List<Like>();
+    public ICollection<Like> LikesRecibidos { get; set; } = new List<Like>();
+
+    // Relación con Matches
+    public ICollection<Match> Matches1 { get; set; } = new List<Match>();
+    public ICollection<Match> Matches2 { get; set; } = new List<Match>();
 
     // Constructor
     public Usuario()

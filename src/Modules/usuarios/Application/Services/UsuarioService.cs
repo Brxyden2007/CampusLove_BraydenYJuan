@@ -6,8 +6,6 @@ using CampusLove.src.Modules.Usuario.Domain.Entities;
 using CampusLove_BraydenYJuan.src.Shared.Context;
 using CampusLove_BraydenYJuan.src.Shared.Utils;
 using Microsoft.EntityFrameworkCore;
-using CampusLove_BraydenYJuan.src.Modules.usuarios_intereses.Domain.Entities; // Necesario para UsuarioInteres
-
 namespace CampusLove_BraydenYJuan.src.Modules.usuarios.Application.Services;
 
 public class UsuarioService
@@ -77,8 +75,8 @@ public class UsuarioService
         {
             usuario.UsuarioIntereses.Add(new UsuarioInteres
             {
-                usuario_id = usuario.Id,    // ¡ACTUALIZADO!
-                interes_id = interes.Id     // ¡ACTUALIZADO!
+                UsuarioId = usuario.Id,    // ¡ACTUALIZADO!
+                InteresId = interes.Id     // ¡ACTUALIZADO!
             });
         }
 

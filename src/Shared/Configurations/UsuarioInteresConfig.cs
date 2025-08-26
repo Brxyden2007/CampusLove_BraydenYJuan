@@ -1,33 +1,26 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CampusLove_BraydenYJuan.src.Modules.usuarios_intereses.Domain.Entities;
+// CampusLove_BraydenYJuan.src.Shared.Configurations/UsuarioInteresConfig.cs
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CampusLove_BraydenYJuan.src.Shared.Configurations
+public class UsuarioInteresConfig : IEntityTypeConfiguration<UsuarioInteres>
 {
-    public class UsuarioInteresConfig : IEntityTypeConfiguration<UsuarioInteres>
+    public void Configure(EntityTypeBuilder<UsuarioInteres> builder)
     {
-        public void Configure(EntityTypeBuilder<UsuarioInteres> builder)
-        {
-            builder.ToTable("interesusuario");
+        builder.ToTable("interesusuario");
+        
+        // Define la clave primaria compuesta
+        builder.HasKey(ui => new { ui.UsuarioId, ui.InteresId });
 
-            // ¡ACTUALIZADO! Las claves primarias usan los nuevos nombres de propiedades en snake_case
-            builder.HasKey(ui => new { ui.usuario_id, ui.interes_id });
+        // Configura la relación con Usuario
+        builder.HasOne(ui => ui.Usuario)
+            .WithMany(u => u.UsuarioIntereses)
+            .HasForeignKey(ui => ui.UsuarioId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-            // Ya no necesitamos HasColumnName aquí si la propiedad C# ya coincide
-            // builder.Property(ui => ui.usuario_id).HasColumnName("usuario_id");
-            // builder.Property(ui => ui.interes_id).HasColumnName("interes_id");
-
-            builder.HasOne(ui => ui.Usuario)
-               .WithMany(u => u.UsuarioIntereses)
-               .HasForeignKey(ui => ui.usuario_id); // ¡ACTUALIZADO!
-
-            builder.HasOne(ui => ui.Interes)
-               .WithMany(i => i.UsuarioIntereses)
-               .HasForeignKey(ui => ui.interes_id); // ¡ACTUALIZADO!
-        }
+        // Configura la relación con Interes
+        builder.HasOne(ui => ui.Interes)
+            .WithMany(i => i.UsuarioIntereses)
+            .HasForeignKey(ui => ui.InteresId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

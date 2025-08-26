@@ -5,7 +5,6 @@ using CampusLove.src.Shared.Utils;
 using CampusLove.src.Modules.Usuario.Domain.Entities;
 using CampusLove_BraydenYJuan.src.Shared.Helpers;
 using CampusLove_BraydenYJuan.src.Modules.intereses.Domain.Entities;
-using CampusLove_BraydenYJuan.src.Modules.usuarios_intereses.Domain.Entities; // <-- ¡Asegúrate de incluir este using!
 using CampusLove.src.Modules.Usuario.UI;
 using CampusLove_BraydenYJuan.src.Shared.Context; // Asegúrate de tener el using para tu DbContextFactory
 
@@ -147,18 +146,21 @@ namespace CampusLove.src.UI
                 Frase = frase
             };
 
-            // Creamos las relaciones explícitas con UsuarioInteres
+            context.Usuarios.Add(nuevoUsuario);
+            context.SaveChanges(); // Save user first to get the ID
+
+            // Now create the UsuarioInteres relationships with the correct user ID
             foreach (var interes in seleccionados)
             {
-                nuevoUsuario.UsuarioIntereses.Add(new UsuarioInteres
+                var usuarioInteres = new UsuarioInteres
                 {
-                    // ¡ACTUALIZADO! Usamos 'interes_id' (snake_case)
-                    interes_id = interes.Id
-                });
+                    UsuarioId = nuevoUsuario.Id, // Now we have the user ID
+                    InteresId = interes.Id
+                };
+                context.UsuarioIntereses.Add(usuarioInteres);
             }
 
-            context.Usuarios.Add(nuevoUsuario);
-            context.SaveChanges(); // <-- Línea 161 que da el error
+            context.SaveChanges(); // Save the relationships
 
             Console.WriteLine("✅ Usuario registrado exitosamente. Presiona Enter.");
             Console.ReadLine();
@@ -185,7 +187,7 @@ namespace CampusLove.src.UI
             {
                 Console.WriteLine($"✅ Bienvenido, {usuario.Nombre} {usuario.Apellido}!");
                 Console.ReadLine();
-                MenuUsuario.MostrarMenu();
+                MenuUsuario.MostrarMenu(usuario.Id);
             }
             else
             {

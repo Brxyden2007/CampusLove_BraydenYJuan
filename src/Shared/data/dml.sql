@@ -40,5 +40,5 @@ INSERT INTO interesusuario VALUES (5, 9), (5, 10);
 INSERT INTO interesusuario VALUES (6, 11), (6, 12);
 
 
-INSERT INTO matches (usuario1_id, usuario2_id) VALUES
+INSERT INTO matches (Usuario1Id, Usuario2Id) VALUES -- Esta dañado al parecer, en si me enrede con la base de datos...
 (1, 2); -- María y Juan son match

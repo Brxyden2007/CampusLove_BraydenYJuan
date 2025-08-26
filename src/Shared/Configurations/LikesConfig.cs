@@ -15,30 +15,37 @@ namespace CampusLove_BraydenYJuan.src.Shared.Configurations
 
             builder.HasKey(l => l.Id);
 
-            builder.Property(l => l.UsuarioQueDaLikeId)
-                .HasColumnName("usuario_id")
+            // Ahora coincide con los nombres reales en la tabla
+            builder.Property(l => l.UsuarioDadorId)
+                .HasColumnName("UsuarioDadorId")
                 .IsRequired();
 
-            builder.Property(l => l.UsuarioQueRecibeLikeId)
-                .HasColumnName("usuario_liked_id")
+            builder.Property(l => l.UsuarioId)
+                    .HasColumnName("UsuarioId");
+
+            builder.Property(l => l.UsuarioReceptorId)
+                .HasColumnName("UsuarioReceptorId")
                 .IsRequired();
 
             builder.Property(l => l.FechaLike)
                 .HasColumnName("fecha")
                 .IsRequired();
 
-            // Relaciones
-            builder.HasOne(l => l.UsuarioQueDaLike)
-                .WithMany()
-                .HasForeignKey(l => l.UsuarioQueDaLikeId)
+            // Relaciones con Usuario
+            builder.HasOne(l => l.UsuarioDador)
+                .WithMany(u => u.LikesDados)
+                .HasForeignKey(l => l.UsuarioDadorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(l => l.UsuarioQueRecibeLike)
-                .WithMany()
-                .HasForeignKey(l => l.UsuarioQueRecibeLikeId)
+            builder.HasOne(l => l.UsuarioReceptor)
+                .WithMany(u => u.LikesRecibidos)
+                .HasForeignKey(l => l.UsuarioReceptorId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-                
+            
+            builder.Property(l => l.UsuarioDadorId).HasColumnName("UsuarioDadorId");
+            builder.Property(l => l.UsuarioId).HasColumnName("UsuarioId");
+            builder.Property(l => l.UsuarioReceptorId).HasColumnName("UsuarioReceptorId");
+            builder.Property(l => l.FechaLike).HasColumnName("fecha");
         }
     }
 }

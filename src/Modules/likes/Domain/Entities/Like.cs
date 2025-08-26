@@ -8,11 +8,19 @@ namespace CampusLove_BraydenYJuan.src.Modules.likes.Domain.Entities
 {
     public class Like
     {
-        public int Id { get; set; }
-        public int UsuarioQueDaLikeId { get; set; }
-        public int UsuarioQueRecibeLikeId { get; set; }
+         public int Id { get; set; }
+
+    // Clave foránea para el usuario que da el like
+        public int UsuarioDadorId { get; set; }
+        public Usuario? UsuarioDador { get; set; }
+
+        public int UsuarioId { get; set; }
+
+        // Clave foránea para el usuario que recibe el like
+        public int UsuarioReceptorId { get; set; }
+        public Usuario? UsuarioReceptor { get; set; }
+
+        // Otras propiedades
         public DateTime FechaLike { get; set; }
-        public Usuario? UsuarioQueDaLike { get; set; }
-        public Usuario? UsuarioQueRecibeLike { get; set; }
     }
 }

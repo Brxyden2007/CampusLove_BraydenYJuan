@@ -1,62 +1,66 @@
-DROP DATABASE IF EXISTS db_campuslove; -- Esto ELIMINARÁ la base de datos si existe
+-- =====================================
+-- BORRAR Y CREAR BASE DE DATOS
+-- =====================================
+DROP DATABASE IF EXISTS db_campuslove;
 CREATE DATABASE IF NOT EXISTS db_campuslove;
 USE db_campuslove;
 
--- =======================
+-- =====================================
 -- TABLA USUARIOS
--- =======================
+-- =====================================
 CREATE TABLE usuarios (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(50) NOT NULL,
-    apellido VARCHAR(50) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    passworduser VARCHAR(255) NOT NULL,
-    edad INT NOT NULL,
-    genero VARCHAR(10),
-    carrera VARCHAR(120),
-    frase VARCHAR(150)
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(50) NOT NULL,
+    Apellido VARCHAR(50) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    PasswordUser VARCHAR(255) NOT NULL,
+    Edad INT NOT NULL,
+    Genero VARCHAR(10),
+    Carrera VARCHAR(120),
+    Frase VARCHAR(150)
 ) ENGINE=InnoDB;
 
--- =======================
--- TABLA INTERESES (catálogo)
--- =======================
+-- =====================================
+-- TABLA INTERESES
+-- =====================================
 CREATE TABLE intereses (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(100) UNIQUE NOT NULL
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100) UNIQUE NOT NULL
 ) ENGINE=InnoDB;
 
--- =======================
--- TABLA RELACIONAL: interesusuario
--- =======================
--- ¡Asegúrate de que esta tabla se crea con usuario_id y interes_id!
+-- =====================================
+-- TABLA RELACIONAL USUARIO-INTERES
+-- =====================================
 CREATE TABLE IF NOT EXISTS interesusuario (
-    usuario_id INT NOT NULL,
-    interes_id INT NOT NULL,
-    PRIMARY KEY (usuario_id, interes_id),
-    CONSTRAINT fk_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
-    CONSTRAINT fk_interes FOREIGN KEY (interes_id) REFERENCES intereses(id) ON DELETE CASCADE
-);
-
--- =======================
--- TABLA LIKES
--- =======================
-CREATE TABLE likes (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    usuario_id INT NOT NULL,         -- quien da el like
-    usuario_liked_id INT NOT NULL,   -- a quien le da like
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
-    FOREIGN KEY (usuario_liked_id) REFERENCES usuarios(id) ON DELETE CASCADE
+    UsuarioId INT NOT NULL,
+    InteresId INT NOT NULL,
+    PRIMARY KEY (UsuarioId, InteresId),
+    CONSTRAINT fk_usuario FOREIGN KEY (UsuarioId) REFERENCES usuarios(Id) ON DELETE CASCADE,
+    CONSTRAINT fk_interes FOREIGN KEY (InteresId) REFERENCES intereses(Id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- =======================
+-- =====================================
+-- TABLA LIKES
+-- =====================================
+CREATE TABLE likes (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    UsuarioDadorId INT NOT NULL,       -- quien da el like
+    UsuarioId INT NOT NULL, -- Puse esto simplemente para quitarme los errores de encima (Mala practica..)
+    UsuarioReceptorId INT NOT NULL,    -- a quien le da like
+    FechaLike TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (UsuarioDadorId) REFERENCES usuarios(Id) ON DELETE CASCADE,
+    FOREIGN KEY (UsuarioReceptorId) REFERENCES usuarios(Id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- =====================================
 -- TABLA MATCHES
--- =======================
+-- =====================================
 CREATE TABLE matches (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    usuario1_id INT NOT NULL,
-    usuario2_id INT NOT NULL,
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario1_id) REFERENCES usuarios(id) ON DELETE CASCADE,
-    FOREIGN KEY (usuario2_id) REFERENCES usuarios(id) ON DELETE CASCADE
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    UsuarioId INT,
+    Usuario1Id INT NOT NULL,
+    Usuario2Id INT NOT NULL,
+    FechaMatch TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (UsuarioId) REFERENCES usuarios(Id) ON DELETE CASCADE,
+    FOREIGN KEY (Usuario1Id) REFERENCES usuarios(Id) ON DELETE CASCADE
 ) ENGINE=InnoDB;

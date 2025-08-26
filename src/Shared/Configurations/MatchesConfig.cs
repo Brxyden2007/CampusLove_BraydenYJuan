@@ -1,33 +1,42 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CampusLove_BraydenYJuan.src.Modules.matches.Domain.Entities;
+using CampusLove.src.Modules.Usuario.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CampusLove_BraydenYJuan.src.Shared.Configurations
 {
     public class MatchesConfig : IEntityTypeConfiguration<Match>
     {
-        public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Match> builder)
+        public void Configure(EntityTypeBuilder<Match> builder)
         {
             builder.ToTable("matches");
 
             builder.HasKey(m => m.Id);
 
             builder.Property(m => m.FechaMatch)
+                   .HasColumnName("FechaMatch")
+                   .HasColumnType("timestamp")
                    .IsRequired();
 
-            // Configuración de relaciones
+            builder.Property(m => m.UsuarioId)
+                    .HasColumnName("UsuarioId");
+
+            // Relaciones
             builder.HasOne(m => m.Usuario1)
-                   .WithMany() // Asumiendo que no hay una colección de Matches en Usuario
+                   .WithMany(u => u.Matches1)
                    .HasForeignKey(m => m.Usuario1Id)
-                   .OnDelete(DeleteBehavior.Restrict); // Evitar eliminación en cascada
+                   .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(m => m.Usuario2)
-                   .WithMany() // Asumiendo que no hay una colección de Matches en Usuario
+                   .WithMany(u => u.Matches2)
                    .HasForeignKey(m => m.Usuario2Id)
-                   .OnDelete(DeleteBehavior.Restrict); // Evitar eliminación en cascada
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Property(m => m.UsuarioId).HasColumnName("UsuarioId");
+            builder.Property(m => m.Usuario1Id).HasColumnName("Usuario1Id");
+            builder.Property(m => m.Usuario2Id).HasColumnName("Usuario2Id");
+            builder.Property(m => m.FechaMatch).HasColumnName("FechaMatch");
         }
     }
 }
