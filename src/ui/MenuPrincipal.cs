@@ -100,7 +100,7 @@ namespace CampusLove.src.UI
             if (!Validaciones.EsEdadValida(Console.ReadLine()!, out edad)) { Console.WriteLine("❌ Edad inválida."); Console.ReadLine(); return; }
 
             Console.Write("Genero (M/F): ");
-            genero = Console.ReadLine()!;
+            genero = Console.ReadLine()!.ToUpper();
             if (!Validaciones.EsGeneroValido(genero)) { Console.WriteLine("❌ Género inválido."); Console.ReadLine(); return; }
 
             Console.Write("Carrera: ");

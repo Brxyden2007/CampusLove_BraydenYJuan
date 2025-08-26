@@ -276,7 +276,7 @@ public class MenuUsuario
         Console.Clear();
         Console.WriteLine("=== 👍 Dar Likes ===");
 
-        foreach (var usuario in otrosUsuarios.Take(5))
+        foreach (var usuario in otrosUsuarios)
         {
             Console.WriteLine($"\n👤 {usuario.Nombre} {usuario.Apellido}");
             Console.WriteLine($"🎓 Carrera: {usuario.Carrera}");
